@@ -13,9 +13,9 @@
 <script src="perlin.js"></script>
 <script>
     var offset = 0;
-
+    var count = window.innerWidth / 100 +3;
     $(document).ready(function(){
-        var count = window.innerWidth / 100 +3;
+
         var $body = $("#wrapper");
         noise.seed(Math.random());
 
@@ -44,7 +44,7 @@
 
     function step() {
         offset++;
-        for (var x = 0; x < 20; x++) {
+        for (var x = 0; x < count; x++) {
             for (var y = 0; y < 11; y++) {
                 var r = (noise.simplex3((x + offset) / 100, y / 100, 0) +1)/2;
                 var g = (noise.simplex3((x + offset) / 100, y / 100, 100)+1)/2;
