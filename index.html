@@ -13,27 +13,34 @@
 <script src="perlin.js"></script>
 <script>
     var offset = 0;
-    var count = window.innerWidth / 100 +3;
+    var countX = window.innerWidth / 100 +2;
+    var countY = window.innerHeight / 86 +2;
     $(document).ready(function(){
 
         var $body = $("#wrapper");
         noise.seed(Math.random());
 
-
-        for (var x = 0; x < count; x++) {
-            for (var y = 0; y < 11; y++) {
+        for (var x = -2; x < countX * 2; x++) {
+            for (var y = -2; y < countY; y++) {
                 var r = (noise.simplex3(x / 100, y / 100, 0) +1)/2;
                 var g = (noise.simplex3(x / 100, y / 100, 100)+1)/2;
                 var b = (noise.simplex3(x / 100, y / 100, 200)+1)/2;
 
-                var $rect = $("<div class='rect'></div>");
-                $rect.attr("id", x + "-" + y);
-                $rect.css({
-                    "top": y*100,
-                    "left": x*99,
-                    "background": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
+                var $tri = $('<svg  class="tri" version="1.1" baseProfile="full"xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"width="100px" height="87px" viewBox="0 0 502 435" > <polygon points="1,434 501,434 251,1" /> </svg>');
+
+                $tri.attr("id", x + "-" + y);
+                $tri.css({
+                    "top": y*87,
+                    "left": x*50,
+                    "fill": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
                 });
-                $body.append($rect);
+                if(x%2 == 0){
+                    $tri.css("transform", "rotate(180deg)");
+                }
+                if(y%2 == 0){
+                    $tri.css("transform", $tri.css("transform") + " translate(-50px, 0)")
+                }
+                $body.append($tri);
             }
         }
 
@@ -44,15 +51,15 @@
 
     function step() {
         offset++;
-        for (var x = 0; x < count; x++) {
-            for (var y = 0; y < 11; y++) {
+        for (var x = 0; x < countX*2; x++) {
+            for (var y = 0; y < countY; y++) {
                 var r = (noise.simplex3((x + offset) / 100, y / 100, 0) +1)/2;
                 var g = (noise.simplex3((x + offset) / 100, y / 100, 100)+1)/2;
                 var b = (noise.simplex3((x + offset) / 100, y / 100, 200)+1)/2;
 
-                var $rect = $("#" + x + "-" + y);
-                $rect.css({
-                    "background": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
+                var $tri = $("#" + x + "-" + y);
+                $tri.css({
+                    "fill": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
                 });
             }
         }
@@ -67,8 +74,8 @@
 </script>
 <style>
     @keyframes move {
-       0%{transform: translate(0,0)}
-       100%{transform: translate(-100px,0)}
+       0%{transform: translate(-50px,-10px)}
+       100%{transform: translate(-150px,-10px)}
     }
 
     html, body{
@@ -78,7 +85,7 @@
         height:100%;
         overflow:hidden;
     }
-    .rect{
+    .tri{
         position: absolute;
         width:100px;
         height:100px;
