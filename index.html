@@ -22,9 +22,9 @@
 
         for (var x = -2; x < countX * 2; x++) {
             for (var y = -2; y < countY; y++) {
-                var r = (noise.simplex3(x / 100, y / 100, 0) +1)/2;
-                var g = (noise.simplex3(x / 100, y / 100, 100)+1)/2;
-                var b = (noise.simplex3(x / 100, y / 100, 200)+1)/2;
+                var r = (noise.simplex3(x / 200, y / 100, 0) +1)/2;
+                var g = (noise.simplex3(x / 200, y / 100, 100)+1)/2;
+                var b = (noise.simplex3(x / 200, y / 100, 200)+1)/2;
 
                 var $tri = $('<svg  class="tri" version="1.1" baseProfile="full"xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"width="100px" height="87px" viewBox="0 0 502 435" > <polygon points="1,434 501,434 251,1" /> </svg>');
 
@@ -53,9 +53,9 @@
         offset++;
         for (var x = 0; x < countX*2; x++) {
             for (var y = 0; y < countY; y++) {
-                var r = (noise.simplex3((x + offset) / 100, y / 100, 0) +1)/2;
-                var g = (noise.simplex3((x + offset) / 100, y / 100, 100)+1)/2;
-                var b = (noise.simplex3((x + offset) / 100, y / 100, 200)+1)/2;
+                var r = (noise.simplex3((x + offset) / 200, y / 100, 0) +1)/2;
+                var g = (noise.simplex3((x + offset) / 200, y / 100, 100)+1)/2;
+                var b = (noise.simplex3((x + offset) / 200, y / 100, 200)+1)/2;
 
                 var $tri = $("#" + x + "-" + y);
                 $tri.css({
