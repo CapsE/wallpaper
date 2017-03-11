@@ -12,65 +12,95 @@
 <script src="jquery-3.1.1.min.js"></script>
 <script src="perlin.js"></script>
 <script>
-    var offset = 0;
-    var count = window.innerWidth / 100 +3;
+    var offsetX = 0;
+    var offsetY = 0;
+    var translateX = 0;
+    var translateY = 0;
+    var countX = window.innerWidth / 100 +2;
+    var countY = window.innerHeight / 86 +2;
+    var $body;
     $(document).ready(function(){
 
-        var $body = $("#wrapper");
+        $body = $("#wrapper");
         noise.seed(Math.random());
 
-
-        for (var x = 0; x < count; x++) {
-            for (var y = 0; y < 11; y++) {
+        for (var x = -2; x < countX * 2; x++) {
+            for (var y = -2; y < countY; y++) {
                 var r = (noise.simplex3(x / 100, y / 100, 0) +1)/2;
                 var g = (noise.simplex3(x / 100, y / 100, 100)+1)/2;
                 var b = (noise.simplex3(x / 100, y / 100, 200)+1)/2;
 
-                var $rect = $("<div class='rect'></div>");
-                $rect.attr("id", x + "-" + y);
-                $rect.css({
-                    "top": y*100,
-                    "left": x*99,
-                    "background": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
+                var $tri = $('<svg  class="tri" version="1.1" baseProfile="full"xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"width="100px" height="87px" viewBox="0 0 502 435" > <polygon points="1,434 501,434 251,1" /> </svg>');
+
+                $tri.attr("id", x + "-" + y);
+                $tri.css({
+                    "top": y*86,
+                    "left": x*50,
+                    "fill": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
                 });
-                $body.append($rect);
+                if(x%2 == 0){
+                    $tri.css("transform", "rotate(180deg)");
+                }
+                if(y%2 == 0){
+                    $tri.css("transform", $tri.css("transform") + " translate(-50px, 0)")
+                }
+                $body.append($tri);
             }
         }
 
         setInterval(function(){
-            step();
-        }, 6000);
+            render();
+        }, 1000/30);
     });
 
-    function step() {
-        offset++;
-        for (var x = 0; x < count; x++) {
-            for (var y = 0; y < 11; y++) {
-                var r = (noise.simplex3((x + offset) / 100, y / 100, 0) +1)/2;
-                var g = (noise.simplex3((x + offset) / 100, y / 100, 100)+1)/2;
-                var b = (noise.simplex3((x + offset) / 100, y / 100, 200)+1)/2;
+    function render() {
+        translateX += dx;
+        translateY += dy;
+        if(translateX > 100 || translateX < -100){
+            step(Math.sign(translateX),0);
+            translateX = 0;
+        }
+        if(translateY > 86*2 || translateY < -86*2){
+            step(0,Math.sign(translateY));
+            translateY = 0;
+        }
+        $body.css("transform", "translate(" + translateX + "px," + translateY + "px)");
+    }
 
-                var $rect = $("#" + x + "-" + y);
-                $rect.css({
-                    "background": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
+    function step(xDir, yDir) {
+        offsetX -= xDir;
+        offsetY -= yDir;
+        for (var x = -2; x < countX*2; x++) {
+            for (var y = -2; y < countY; y++) {
+                var r = (noise.simplex3((x + offsetX) / 100, (y + offsetY) / 100, 0) +1)/2;
+                var g = (noise.simplex3((x + offsetX) / 100, (y + offsetY) / 100, 100)+1)/2;
+                var b = (noise.simplex3((x + offsetX) / 100, (y + offsetY) / 100, 200)+1)/2;
+
+                var $tri = $("#" + x + "-" + y);
+                $tri.css({
+                    "fill": "rgba(" + Math.round(r*255) + "," + Math.round(g*255) + "," + Math.round(b*255) + ",1)"
                 });
             }
         }
     }
 
-    $(document).click(function(){
-        noise.seed(Math.random());
-        offset = 0;
-        step();
+    var mousePos = [0,0];
+    var dx = 0.5;
+    var dy = 0;
+    $(document).mousedown(function(e){
+        mousePos = [e.pageX, e.pageY];
+    });
+
+    $(document).mouseup(function(e){
+        var newMousePos = [e.pageX, e.pageY];
+
+        dx = (newMousePos[0] - mousePos[0]) / 100;
+        dy = (newMousePos[1] - mousePos[1]) / 100;
+        console.log(dx);
     });
 
 </script>
 <style>
-    @keyframes move {
-       0%{transform: translate(0,0)}
-       100%{transform: translate(-100px,0)}
-    }
-
     html, body{
         padding:0px;
         margin:0px;
@@ -78,17 +108,14 @@
         height:100%;
         overflow:hidden;
     }
-    .rect{
+    .tri{
         position: absolute;
         width:100px;
         height:100px;
     }
 
     #wrapper{
-        animation: move;
-        animation-duration: 6s;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
+
     }
 </style>
 </body>
