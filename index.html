@@ -29,8 +29,10 @@
         $("#wrapper").attr("height", countY);
         setInterval(function () {
             step();
-        }, 10);
+        }, 25);
 
+        ctx.fillStyle="#FAFAFA";
+        ctx.fillRect(0,0,countX, countY);
     });
 
     function step() {
@@ -39,28 +41,26 @@
         var g = parseInt(((noise.simplex3((offset) / 200, 1000, 100)+1)/2)*255);
         var b = parseInt(((noise.simplex3((offset) / 200, 1000, 200)+1)/2)*255);
 
-        x +=  noise.simplex2((offset) / 200, 300)*speed;
-        y +=  noise.simplex2((offset) / 200, 400)*speed;
+        x =  ((noise.simplex2((offset) / 200, 300)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset) / 200, 400)) + 1) /2*countY;
 
-        if(x > countX){
-            x -= countX;
-        }
-        if(y > countY){
-            y -= countY;
-        }
-        if(x < 0){
-            x += countX;
-        }
-        if(y < 0){
-            y += countY;
-        }
 
         ctx.fillStyle="rgba(255,255,255,0.1)";
         ctx.fillRect(0,0,countX, countY);
 
+        ctx.fillStyle="rgb(" + r + "," + g + "," + b + ")";
         ctx.beginPath();
         ctx.arc(x,y,50,0,2*Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(countX - x, y,50,0,2*Math.PI);
+        ctx.fill();
         ctx.fillStyle="rgb(" + r + "," + g + "," + b + ")";
+        ctx.beginPath();
+        ctx.arc(x, countY - y,50,0,2*Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(countX - x, countY - y,50,0,2*Math.PI);
         ctx.fill();
 
     }
@@ -77,6 +77,11 @@
         width:100%;
         height:100%;
         overflow:hidden;
+    }
+
+    @keyframes rotate {
+       0%{ transform: rotate(0deg)}
+       100%{ transform: rotate(360deg)}
     }
 </style>
 </body>
