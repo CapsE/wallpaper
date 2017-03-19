@@ -20,7 +20,7 @@
     var y = Math.random() * countY;
     var lastX = x;
     var lastY = y;
-    var speed = 8;
+    var speed = 0.5;
     $(document).ready(function(){
 
         var $body = $("#wrapper");
@@ -41,8 +41,8 @@
         var g = parseInt(((noise.simplex3((offset) / 200, 1000, 100)+1)/2)*255);
         var b = parseInt(((noise.simplex3((offset) / 200, 1000, 200)+1)/2)*255);
 
-        x =  ((noise.simplex2((offset) / 200, 300)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset) / 200, 400)) + 1) /2*countY;
+        x =  ((noise.simplex2((offset) / (200/speed), 300)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset) / (200/speed), 400)) + 1) /2*countY;
 
 
         ctx.fillStyle="rgba(255,255,255,0.1)";
@@ -53,19 +53,19 @@
         ctx.arc(x,y,50,0,2*Math.PI);
         ctx.fill();
 
-        x =  ((noise.simplex2((offset+5) / 200, 300.05)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+5) / 200, 400.05)) + 1) /2*countY;
+        x =  ((noise.simplex2((offset+5) / (200/speed), 300.05)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+5) / (200/speed), 400.05)) + 1) /2*countY;
         ctx.beginPath();
         ctx.arc( x, y,50,0,2*Math.PI);
         ctx.fill();
 
-        x =  ((noise.simplex2((offset+10) / 200, 300.1)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+10) / 200, 400.1)) + 1) /2*countY;
+        x =  ((noise.simplex2((offset+10) / (200/speed), 300.1)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+10) / (200/speed), 400.1)) + 1) /2*countY;
         ctx.beginPath();
         ctx.arc(x,  y,50,0,2*Math.PI);
         ctx.fill();
-        x =  ((noise.simplex2((offset+15) / 200, 300.15)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+15) / 200, 400.15)) + 1) /2*countY;
+        x =  ((noise.simplex2((offset+15) / (200/speed), 300.15)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+15) / (200/speed), 400.15)) + 1) /2*countY;
         ctx.beginPath();
         ctx.arc( x,  y,50,0,2*Math.PI);
         ctx.fill();
