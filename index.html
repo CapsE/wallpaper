@@ -52,15 +52,22 @@
         ctx.beginPath();
         ctx.arc(x,y,50,0,2*Math.PI);
         ctx.fill();
+
+        x =  ((noise.simplex2((offset+5) / 200, 300.05)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+5) / 200, 400.05)) + 1) /2*countY;
         ctx.beginPath();
-        ctx.arc(countX - x, y,50,0,2*Math.PI);
+        ctx.arc( x, y,50,0,2*Math.PI);
         ctx.fill();
-        ctx.fillStyle="rgb(" + r + "," + g + "," + b + ")";
+
+        x =  ((noise.simplex2((offset+10) / 200, 300.1)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+10) / 200, 400.1)) + 1) /2*countY;
         ctx.beginPath();
-        ctx.arc(x, countY - y,50,0,2*Math.PI);
+        ctx.arc(x,  y,50,0,2*Math.PI);
         ctx.fill();
+        x =  ((noise.simplex2((offset+15) / 200, 300.15)) + 1) /2*countX;
+        y =  ((noise.simplex2((offset+15) / 200, 400.15)) + 1) /2*countY;
         ctx.beginPath();
-        ctx.arc(countX - x, countY - y,50,0,2*Math.PI);
+        ctx.arc( x,  y,50,0,2*Math.PI);
         ctx.fill();
 
     }
