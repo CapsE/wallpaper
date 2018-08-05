@@ -12,6 +12,7 @@
 <script src="jquery-3.1.1.min.js"></script>
 <script src="perlin.js"></script>
 <script>
+    var tailLength = 100;
     var offset = 0;
     var countX = window.innerWidth;
     var countY = window.innerHeight;
@@ -37,39 +38,41 @@
 
     function step() {
         offset++;
-        var r = parseInt(((noise.simplex3((offset) / 200, 1000, 0) +1)/2)*255);
-        var g = parseInt(((noise.simplex3((offset) / 200, 1000, 100)+1)/2)*255);
-        var b = parseInt(((noise.simplex3((offset) / 200, 1000, 200)+1)/2)*255);
+        var r = parseInt(((noise.simplex3((offset) / 200, 1000, 0) +1)/2)*140);
 
-        x =  ((noise.simplex2((offset) / (200/speed), 300)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset) / (200/speed), 400)) + 1) /2*countY;
+        var h = parseInt(((noise.simplex3((offset + 1000) / 1000, 1000, 0) +1)/2)*360);
+        var h2 = (h + r + 180)%360;
 
 
-        ctx.fillStyle="rgba(255,255,255,0.05)";
+        ctx.clearRect(0,0,countX, countY);
+        ctx.fillStyle='hsl('+ h +',75%,50%)';
         ctx.fillRect(0,0,countX, countY);
 
-        ctx.fillStyle="rgb(" + r + "," + g + "," + b + ")";
-        ctx.beginPath();
-        ctx.arc(x,y,50,0,2*Math.PI);
-        ctx.fill();
+        for(var i = 0; i < tailLength; i+=10){
+            ctx.fillStyle="hsla(" + h2 + ",75%, 50%," + (1/tailLength) * i + ")";
+            x =  ((noise.simplex2((offset + i ) / (200/speed), 300)) + 1) /2*countX;
+            y =  ((noise.simplex2((offset + i ) / (200/speed), 400)) + 1) /2*countY;
+            ctx.beginPath();
+            ctx.arc(x,y,50,0,2*Math.PI);
+            ctx.fill();
 
-        x =  ((noise.simplex2((offset+5) / (200/speed), 300.05)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+5) / (200/speed), 400.05)) + 1) /2*countY;
-        ctx.beginPath();
-        ctx.arc( x, y,50,0,2*Math.PI);
-        ctx.fill();
+            x =  ((noise.simplex2((offset + i + 5) / (200/speed), 300.05)) + 1) /2*countX;
+            y =  ((noise.simplex2((offset + i + 5) / (200/speed), 400.05)) + 1) /2*countY;
+            ctx.beginPath();
+            ctx.arc( x, y,50,0,2*Math.PI);
+            ctx.fill();
 
-        x =  ((noise.simplex2((offset+10) / (200/speed), 300.1)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+10) / (200/speed), 400.1)) + 1) /2*countY;
-        ctx.beginPath();
-        ctx.arc(x,  y,50,0,2*Math.PI);
-        ctx.fill();
-        x =  ((noise.simplex2((offset+15) / (200/speed), 300.15)) + 1) /2*countX;
-        y =  ((noise.simplex2((offset+15) / (200/speed), 400.15)) + 1) /2*countY;
-        ctx.beginPath();
-        ctx.arc( x,  y,50,0,2*Math.PI);
-        ctx.fill();
-
+            x =  ((noise.simplex2((offset + i + 10) / (200/speed), 300.1)) + 1) /2*countX;
+            y =  ((noise.simplex2((offset + i + 10) / (200/speed), 400.1)) + 1) /2*countY;
+            ctx.beginPath();
+            ctx.arc(x,  y,50,0,2*Math.PI);
+            ctx.fill();
+            x =  ((noise.simplex2((offset + i + 15) / (200/speed), 300.15)) + 1) /2*countX;
+            y =  ((noise.simplex2((offset + i + 15) / (200/speed), 400.15)) + 1) /2*countY;
+            ctx.beginPath();
+            ctx.arc( x,  y,50,0,2*Math.PI);
+            ctx.fill();
+        }
     }
 
     $(document).click(function(){
